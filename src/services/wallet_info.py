@@ -27,10 +27,10 @@ class WalletInfoService:
         )
 
     async def create_wallet_info(self, wallet_request: WalletRequest) -> Wallet:
-        wallet_info = await self.get_wallet_info_tron(wallet_request.address)
-        await self.db.wallet_info.create_wallet_info(wallet_info)
+        wallet_info_tron = await self.get_wallet_info_tron(wallet_request.address)
+        new_wallet_info = await self.db.wallet_info.create_wallet_info(wallet_info_tron)
         await self.db.commit()
-        return wallet_info
+        return new_wallet_info
     
     async def get_wallet_info_list(self, pagination) -> list[Wallet]:
         per_page = pagination.per_page or 5
