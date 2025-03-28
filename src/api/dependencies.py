@@ -10,7 +10,12 @@ from src.database import async_session_maker
 class PaginationParams(BaseModel):
     page: Annotated[int | None, Query(1, ge=1)]
     per_page: Annotated[
-        int | None, Query(None, ge=1, lt=30,)
+        int | None,
+        Query(
+            None,
+            ge=1,
+            lt=30,
+        ),
     ]
 
 

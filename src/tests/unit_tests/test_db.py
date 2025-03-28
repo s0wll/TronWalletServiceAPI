@@ -12,7 +12,7 @@ async def test_create_wallet_info(db):
     # Добавление данных в БД
     await db.wallet_info.create_wallet_info(wallet_info_data)
     await db.commit()
-    
+
     # Получение этих данных, чтобы удостовериться, что они есть в БД
     wallet_info_list = await db.wallet_info.get_wallet_info_list(limit=5, offset=1)
     assert wallet_info_list

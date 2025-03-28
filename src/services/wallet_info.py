@@ -10,11 +10,11 @@ from src.utils.db_manager import DBManager
 
 class WalletInfoService:
     db: DBManager
-    api_keys=[
-            "f0ebfa71-17d0-4c33-9582-47592527ef0e",
-            "bc1c8478-816c-45ad-be86-0413bedc817c",
-            "a23d34a3-07e8-4b54-b739-1c198c12f957"
-        ]
+    api_keys = [
+        "f0ebfa71-17d0-4c33-9582-47592527ef0e",
+        "bc1c8478-816c-45ad-be86-0413bedc817c",
+        "a23d34a3-07e8-4b54-b739-1c198c12f957",
+    ]
 
     def __init__(self, db: DBManager) -> None:
         self.db = db
@@ -22,7 +22,7 @@ class WalletInfoService:
     async def get_wallet_info_tron(self, address: str) -> WalletResponse:
         # Получение некоторых данных кошелька при помощи tronpy
         # Из-за специфики API Tron, нам нужно инициализировать Tron() с ключами API, чтобы не получать ошибку 401
-        provider = HTTPProvider('https://api.trongrid.io', api_key=self.api_keys)
+        provider = HTTPProvider("https://api.trongrid.io", api_key=self.api_keys)
         tron = Tron(provider=provider)
         account = tron.get_account(address)
         account_name = account.get("account_name", None)
@@ -40,7 +40,7 @@ class WalletInfoService:
             address=address,
             bandwidth=bandwidth,
             energy=energy,
-            balance=balance
+            balance=balance,
         )
 
     async def create_wallet_info(self, wallet_request: WalletRequest) -> Wallet:
@@ -48,13 +48,12 @@ class WalletInfoService:
         new_wallet_info = await self.db.wallet_info.create_wallet_info(wallet_info_tron)
         await self.db.commit()
         return new_wallet_info
-    
+
     async def get_wallet_info_list(self, pagination) -> list[Wallet]:
         per_page = pagination.per_page or 5
         try:
             return await self.db.wallet_info.get_wallet_info_list(
-                limit=per_page,
-                offset=per_page * (pagination.page - 1)
+                limit=per_page, offset=per_page * (pagination.page - 1)
             )
         except ObjectNotFoundException:
             raise WalletInfoNotFoundException
