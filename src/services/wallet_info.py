@@ -1,4 +1,5 @@
 from tronpy import Tron
+import requests
 
 from src.schemas.wallet_info import Wallet, WalletRequest, WalletResponse
 from src.utils.db_manager import DBManager
@@ -11,15 +12,26 @@ class WalletInfoService:
         self.db = db
 
     async def get_wallet_info_tron(self, address: str) -> WalletResponse:
+        # Получение некоторых данных кошелька при помощи tronpy
         tron = Tron()
         account = tron.get_account(address)
-        print(account)
+        account_name = account.get("account_name", None)
+        bandwidth = tron.get_bandwidth(address)
+        balance = tron.get_account_balance(address)
 
-        bandwidth = account.get("bandwidth", 0)  # Если ключ отсутствует, вернется 0
-        energy = account.get("energy", 0)        # Аналогично для energy
-        balance = account.get("balance", 0) / 1_000_000
+        # Получение некоторых данных при помощи альтернативного способа с применением requests
+        url = f"https://api.tronscan.org/api/account?address={address}"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            account_info = response.json()
+            energy = account_info["bandwidth"]["energyRemaining"]
+        else:
+            print(f"Ошибка при получении данных: {response.status_code}")
+            return None
 
         return WalletResponse(
+            account_name=account_name,
             address=address,
             bandwidth=bandwidth,
             energy=energy,

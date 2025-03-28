@@ -6,10 +6,10 @@ class WalletRequest(BaseModel):
 
 
 class WalletResponse(BaseModel):
-    # id: int
+    account_name: str | None = None
     address: str
-    bandwidth: float
-    energy: float
+    bandwidth: int
+    energy: int
     balance: float
 
 
