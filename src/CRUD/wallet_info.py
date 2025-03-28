@@ -1,5 +1,8 @@
+import logging
+
 from sqlalchemy import insert, select
 
+from src.exceptions import ObjectNotFoundException
 from src.schemas.wallet_info import Wallet, WalletResponse
 from src.models.wallet_info import WalletInfoORM
 
@@ -21,4 +24,7 @@ class WalletInfoCRUD:
         query = select(WalletInfoORM).limit(limit).offset(offset)
         result = await self.session.execute(query)
         models = [Wallet.model_validate(one, from_attributes=True) for one in result.scalars().all()]
+        if not models:
+            logging.error("Ошибка получения данных из БД, данные не найдены")
+            raise ObjectNotFoundException
         return models
