@@ -67,8 +67,9 @@ API документация доступна по адресу: http://localhos
    ```bash
    python3 -m venv venv
    ```
-   ```bash
+
    Для MacOS/Linux:
+   ```bash
    source venv/bin/activate
    ```
    Для Windows:
