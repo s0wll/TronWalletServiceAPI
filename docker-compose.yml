@@ -1,0 +1,44 @@
+services:
+  tron_wallet_back_service:
+    container_name: 'tron_wallet_back'
+    build:
+      context: .
+    networks:
+      - my_network
+    env_file:
+      - .env
+
+  tron_wallet_db_service:
+    container_name: 'tron_wallet_db'
+    image: postgres:16
+    environment:
+      POSTGRES_USER: tron_wallet_user
+      POSTGRES_PASSWORD: tron_wallet_password
+      POSTGRES_DB: TronWalletServiceAPI
+    ports:
+      - "6432:5432"
+    volumes:
+      - pg-tron_wallet-data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+
+  tron_wallet_nginx_service:
+    container_name: tron_wallet_nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      [./nginx.conf:/etc/nginx/nginx.conf]
+    networks:
+      - my_network
+
+
+volumes:
+  pg-tron_wallet-data:
+  tron_wallet_nginx:
+
+
+networks:
+  my_network:
+    external: true

@@ -14,4 +14,4 @@ app = FastAPI()
 app.include_router(router_wallet_info)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", reload=True)
