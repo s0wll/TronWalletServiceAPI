@@ -50,18 +50,39 @@ API документация доступна по адресу: http://localhos
 
 ## Тестирование
 
-Для проведения тестирования, в корне проекта необходимо создать дополнительный файл .env-test и установить в нем следующие значения:
-```bash
-MODE=TEST
+1. Для проведения тестирования, в корне проекта необходимо создать дополнительный файл .env-test и установить в нем следующие значения:
+   ```bash
+   MODE=TEST
 
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=(ваше имя пользователя postgres)
-DB_PASS=(ваш пароль postgres)
-DB_NAME=TronWalletServiceAPI-test
-```
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=(ваше имя пользователя postgres)
+   DB_PASS=(ваш пароль postgres)
+   DB_NAME=TronWalletServiceAPI-test
+   ```
 
-Далее создайте дополнительную базу данных в PostgreSQL и назовите ее "TronWalletServiceAPI-test":
+2. Далее создайте дополнительную базу данных в PostgreSQL и назовите ее        "TronWalletServiceAPI-test"
+
+3. Далее создайте и запустите виртуальное окружение с помощью команд:
+   ```bash
+   python3 -m venv venv
+   ```
+   ```bash
+   Для MacOS/Linux:
+   source venv/bin/activate
+   ```
+   Для Windows:
+   ```bash
+   venv\Scripts\activate.bat
+   ```
+   
+   Не забудьте выбрать правильное venv в вашем редакторе кода (В случае с VSCode):
+   ![alt text](image.png)
+
+4. Далее скачайте зависимости, выполнив команду:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 После этого, для запуска тестирования, выполните следующую команду:
 ```bash
